@@ -31,6 +31,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ("name",)
+    list_filter = ("instructors",)
     search_fields = ("name",)
     inlines = [LessonInline, QuestionInline]
 
@@ -38,6 +39,7 @@ class CourseAdmin(admin.ModelAdmin):
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Choice)
 admin.site.register(Instructor)
 admin.site.register(Learner)
 admin.site.register(Submission)
