@@ -37,13 +37,22 @@ class Lesson(models.Model):
         return self.title
 
 
+class Enrollment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="enrollments")
+    date_enrolled = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.get_username()} enrolled in {self.course.name}"
+
+
 class Question(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="questions")
-    text = models.CharField(max_length=500)
+    question_text = models.CharField(max_length=500)
     grade = models.IntegerField(default=1)
 
     def __str__(self):
-        return self.text
+        return self.question_text
 
     def is_get_score(self, selected_ids):
         """True only if the selected choices are exactly the correct ones."""
@@ -53,18 +62,19 @@ class Question(models.Model):
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="choices")
-    text = models.CharField(max_length=300)
+    choice_text = models.CharField(max_length=300)
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.text
+        return self.choice_text
 
 
 class Submission(models.Model):
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE, related_name="submissions", null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="submissions")
     choices = models.ManyToManyField(Choice)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Submission {self.id} for {self.course}"
+        return f"Submission {self.id} for {self.enrollment or self.course}"

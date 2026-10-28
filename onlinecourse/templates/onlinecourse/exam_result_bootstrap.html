@@ -26,14 +26,14 @@
     <div class="card shadow-sm mb-3 border-{% if row.correct %}success{% else %}danger{% endif %}">
       <div class="card-body">
         <h3 class="h6">
-          {{ forloop.counter }}. {{ row.question.text }}
+          {{ forloop.counter }}. {{ row.question.question_text }}
           {% if row.correct %}<span class="badge bg-success">Correct</span>{% else %}<span class="badge bg-danger">Incorrect</span>{% endif %}
         </h3>
         <p class="mb-1 small"><strong>Your answer:</strong>
-          {% for c in row.chosen %}{{ c.text }}{% if not forloop.last %}, {% endif %}{% empty %}nothing selected{% endfor %}
+          {% for c in row.chosen %}{{ c.choice_text }}{% if not forloop.last %}, {% endif %}{% empty %}nothing selected{% endfor %}
         </p>
         <p class="mb-0 small"><strong>Correct answer:</strong>
-          {% for c in row.question.choices.all %}{% if c.is_correct %}{{ c.text }}{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}
+          {% for c in row.question.choices.all %}{% if c.is_correct %}{{ c.choice_text }}{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}
         </p>
       </div>
     </div>

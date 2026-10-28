@@ -8,12 +8,12 @@ class ExamFlowTests(TestCase):
     def setUp(self):
         self.course = Course.objects.create(name="Python Basics")
         Lesson.objects.create(course=self.course, title="Intro")
-        self.q1 = Question.objects.create(course=self.course, text="2+2?", grade=1)
-        self.right = Choice.objects.create(question=self.q1, text="4", is_correct=True)
-        Choice.objects.create(question=self.q1, text="5", is_correct=False)
-        self.q2 = Question.objects.create(course=self.course, text="Keyword for functions?", grade=1)
-        self.right2 = Choice.objects.create(question=self.q2, text="def", is_correct=True)
-        Choice.objects.create(question=self.q2, text="func", is_correct=False)
+        self.q1 = Question.objects.create(course=self.course, question_text="2+2?", grade=1)
+        self.right = Choice.objects.create(question=self.q1, choice_text="4", is_correct=True)
+        Choice.objects.create(question=self.q1, choice_text="5", is_correct=False)
+        self.q2 = Question.objects.create(course=self.course, question_text="Keyword for functions?", grade=1)
+        self.right2 = Choice.objects.create(question=self.q2, choice_text="def", is_correct=True)
+        Choice.objects.create(question=self.q2, choice_text="func", is_correct=False)
 
     def test_course_page_shows_name_and_lessons(self):
         resp = self.client.get(reverse("onlinecourse:course_details", args=[self.course.id]))
