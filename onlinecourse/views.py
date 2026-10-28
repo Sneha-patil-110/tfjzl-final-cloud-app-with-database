@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from .models import Choice, Course, Submission
+from .models import Choice, Course, Enrollment, Submission
 
 PASS_PERCENT = 70
 
@@ -15,7 +15,10 @@ def course_details(request, course_id):
 def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user if request.user.is_authenticated else None
-    submission = Submission.objects.create(user=user, course=course)
+    enrollment = None
+    if user is not None:
+        enrollment, _ = Enrollment.objects.get_or_create(user=user, course=course)
+    submission = Submission.objects.create(user=user, course=course, enrollment=enrollment)
     selected_ids = request.POST.getlist("choice")
     submission.choices.set(Choice.objects.filter(pk__in=selected_ids, question__course=course))
     return redirect("onlinecourse:show_exam_result", course_id=course.id, submission_id=submission.id)
