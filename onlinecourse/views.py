@@ -45,6 +45,10 @@ def show_exam_result(request, course_id, submission_id):
         "earned_grade": earned_grade,
         "total_grade": total_grade,
         "score_percent": score_percent,
+        "total_score": earned_grade,
+        "possible_score": total_grade,
+        "grade": score_percent,
+        "selected_ids": sorted(selected_ids),
         "passed": score_percent >= PASS_PERCENT,
         "pass_mark": PASS_PERCENT,
     }
